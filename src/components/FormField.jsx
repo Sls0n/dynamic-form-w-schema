@@ -26,9 +26,11 @@ export const FormField = ({
   validation, // should be like { required: true, maxLength: 5, minLength: 2}
   onChange,
   placeholder,
+  value: initialValue,
+  defaultValue,
   children,
 }) => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialValue || defaultValue || "");
   const { errors, setErrors, isSubmitted } = React.useContext(FormContext);
 
   const handleChange = (e) => {
