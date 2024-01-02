@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Form from "./components/Form";
 import classes from "./App.module.css";
 import { contactJson, jobApplicationForm } from "./utils/form-schemas";
+import { FormField } from "./components/FormField";
 
 function App() {
   const [currentSchema, setCurrentSchema] = useState(jobApplicationForm);
@@ -37,6 +38,15 @@ function App() {
         Switch to{" "}
         {currentSchema === contactJson ? "Job Application" : "Contact"} form
       </button>
+
+      <FormField
+        id="namee"
+        name="namee"
+        validation={{ required: true, maxLength: 5 }}
+        placeholder={"Enter your name"}
+      >
+        Name
+      </FormField>
 
       <hr className={classes.divider} />
 

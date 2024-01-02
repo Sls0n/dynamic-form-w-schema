@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import classes from "./Form.module.css";
+import Label from "./Label";
 
 export default function Form({ schema, onSubmit }) {
   const [formData, setFormData] = useState({});
@@ -45,12 +46,12 @@ export default function Form({ schema, onSubmit }) {
               className={classes.form__field}
               key={`${field.name} ${field.label}`}
             >
-              <label
+              <Label
                 className={classes["form__field-label"]}
                 htmlFor={field.name}
               >
                 {field.label}
-              </label>
+              </Label>
               <input
                 className={classes["form__field-input"]}
                 type={field.formType}
