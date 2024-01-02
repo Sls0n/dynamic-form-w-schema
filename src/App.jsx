@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import Form from "./components/Form";
 import classes from "./App.module.css";
+import Form from "./components/Form";
 import { contactJson, jobApplicationForm } from "./utils/form-schemas";
 
 function App() {
@@ -22,7 +22,6 @@ function App() {
         key={currentSchema.title}
         schema={currentSchema}
         onSubmit={(formData) => {
-          console.log(formData);
           setOutputData(formData);
         }}
       />

@@ -1,7 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./FormField.module.css";
 import { Input } from "./Input";
 import { Label } from "./Label";
+import { FormContext } from "./Form";
+
+const validate = (value, validation) => {
+  const { required, maxLength, minLength } = validation;
+  let errorMessage = "";
+
+  if (required && !value) {
+    errorMessage = "This field is required.";
+  } else if (maxLength && value.length > maxLength) {
+    errorMessage = `Must be At most ${maxLength} characters.`;
+  } else if (minLength && value.length < minLength) {
+    errorMessage = `Must be at least ${minLength} characters.`;
+  }
+
+  return errorMessage;
+};
 
 export const FormField = ({
   id,
@@ -13,26 +29,39 @@ export const FormField = ({
   children,
 }) => {
   const [value, setValue] = useState("");
-  const [error, setError] = useState("");
+  const { errors, setErrors, isSubmitted } = React.useContext(FormContext);
 
   const handleChange = (e) => {
-    const { required, maxLength, minLength } = validation;
-    const newValue = e.target.value;
-    let errorMessage = "";
-
-    if (required && !newValue) {
-      errorMessage = "This field is required.";
-    } else if (maxLength && newValue.length > maxLength) {
-      errorMessage = `Must be At most ${maxLength} characters.`;
-    } else if (minLength && newValue.length < minLength) {
-      errorMessage = `Must be at least ${minLength} characters.`;
-    }
-
-    setValue(newValue);
-    setError(errorMessage);
+    const errorMessage = validate(e.target.value, validation);
+    setValue(e.target.value);
+    setErrors((prevErrors) => {
+      // if there is an error message, add it to the errors object, otherwise remove it
+      if (errorMessage) {
+        return { ...prevErrors, [id]: errorMessage };
+      } else {
+        const { [id]: value, ...remainingErrors } = prevErrors;
+        return remainingErrors;
+      }
+    });
 
     onChange && onChange(e);
   };
+
+  useEffect(() => {
+    if (isSubmitted) {
+      const errorMessage = validate(value, validation);
+      setErrors((prevErrors) => {
+        // if there is an error message, add it to the errors object, otherwise remove it
+        if (errorMessage) {
+          return { ...prevErrors, [id]: errorMessage };
+        } else {
+          const { [id]: value, ...remainingErrors } = prevErrors;
+          return remainingErrors;
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSubmitted]);
 
   return (
     <div className={classes.form__field}>
@@ -45,10 +74,8 @@ export const FormField = ({
         onChange={handleChange}
         placeholder={placeholder}
       />
-      {error && (
-        <span className={classes["form__field-error"]} id={`${id}-error`}>
-          {error}
-        </span>
+      {isSubmitted && errors[id] && (
+        <p className={classes["form__field-error"]}>{errors[id]}</p>
       )}
     </div>
   );
