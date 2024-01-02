@@ -60,8 +60,6 @@ export const jobApplicationForm = {
       name: "email",
       placeholder: "Enter your email",
       required: true,
-      minLength: 3,
-      maxLength: 15,
     },
     {
       label: "Work Experience",

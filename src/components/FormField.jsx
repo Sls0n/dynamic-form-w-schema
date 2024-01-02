@@ -5,6 +5,7 @@ import { Label } from "./Label";
 
 export const FormField = ({
   id,
+  type,
   name,
   validation, // should be like { required: true, maxLength: 5, minLength: 2}
   onChange,
@@ -37,14 +38,18 @@ export const FormField = ({
     <div className={classes.form__field}>
       <Label htmlFor={id}>{children}</Label>
       <Input
-        type="text"
+        type={type}
         name={name}
         id={id}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
       />
-      {error && <span className={classes['form__field-error']} id={`${id}-error`}>{error}</span>}
+      {error && (
+        <span className={classes["form__field-error"]} id={`${id}-error`}>
+          {error}
+        </span>
+      )}
     </div>
   );
 };
