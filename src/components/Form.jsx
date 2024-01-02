@@ -39,11 +39,7 @@ export default function Form({ schema, onSubmit }) {
 
         {/* Conditionally rendering different fields */}
         {schema.fields.map((field) => {
-          if (
-            field.formType === "text" ||
-            field.formType === "email" ||
-            field.formType === "number"
-          )
+          if (field.formType === "text" || field.formType === "number")
             return (
               <FormField
                 key={`${field.name} ${field.label}`}
@@ -54,6 +50,9 @@ export default function Form({ schema, onSubmit }) {
                   required: true,
                   maxLength: field.maxLength ? field.maxLength : undefined,
                   minLength: field.minLength ? field.minLength : undefined,
+                  pattern: field.pattern
+                    ? new RegExp(field.pattern)
+                    : undefined,
                 }}
                 placeholder={field.placeholder}
                 onChange={inputChangeHandler}

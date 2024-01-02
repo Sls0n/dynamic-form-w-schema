@@ -5,7 +5,7 @@ import { Label } from "./Label";
 import { FormContext } from "./Form";
 
 const validate = (value, validation) => {
-  const { required, maxLength, minLength } = validation;
+  const { required, maxLength, minLength, pattern } = validation;
   let errorMessage = "";
 
   if (required && !value) {
@@ -14,6 +14,8 @@ const validate = (value, validation) => {
     errorMessage = `Must be At most ${maxLength} characters.`;
   } else if (minLength && value.length < minLength) {
     errorMessage = `Must be at least ${minLength} characters.`;
+  } else if (pattern && !pattern.test(value)) {
+    errorMessage = "Invalid email.";
   }
 
   return errorMessage;

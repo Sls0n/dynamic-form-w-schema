@@ -12,10 +12,11 @@ export const contactJson = {
     },
     {
       label: "Email",
-      formType: "email",
+      formType: "text",
       name: "email",
       placeholder: "Enter your email",
       required: true,
+      pattern: "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$",
     },
     {
       label: "Message",
@@ -56,10 +57,11 @@ export const jobApplicationForm = {
     },
     {
       label: "Applicant's email",
-      formType: "email",
+      formType: "text",
       name: "email",
       placeholder: "Enter your email",
       required: true,
+      pattern: "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$",
     },
     {
       label: "Work Experience",
