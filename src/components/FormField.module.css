@@ -3,3 +3,8 @@
   flex-direction: column;
   gap: 0.5rem;
 }
+
+.form__field-error {
+  color: #ff6464;
+  font-size: 0.8em;
+}

@@ -44,7 +44,7 @@ export const FormField = ({
         onChange={handleChange}
         placeholder={placeholder}
       />
-      {error && <span id={`${id}-error`}>{error}</span>}
+      {error && <span className={classes['form__field-error']} id={`${id}-error`}>{error}</span>}
     </div>
   );
 };

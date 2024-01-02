@@ -1,4 +1,5 @@
 import React, { forwardRef } from "react";
+import classes from "./Input.module.css";
 
 export const Input = forwardRef(
   ({ type, name, id, value, onChange, ...props }, ref) => {
@@ -10,6 +11,7 @@ export const Input = forwardRef(
         value={value}
         onChange={onChange}
         ref={ref}
+        className={classes["form__field-input"]}
         {...props}
       />
     );
