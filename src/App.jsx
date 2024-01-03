@@ -18,10 +18,10 @@ function App() {
   return (
     <div className={classes.container}>
       <Form
-        // added key to re-render the component when the schema changes so that it resets the form
         key={currentSchema.title}
         schema={currentSchema}
         onSubmit={(formData) => {
+          // just to show the output
           setOutputData(formData);
         }}
       />
