@@ -1,6 +1,7 @@
 import React, { useState, createContext } from "react";
 import classes from "./Form.module.css";
 import { FormField } from "./FormField";
+import { contactData, jobApplicationData } from "../utils/dummyData";
 
 export const FormContext = createContext({
   errors: {},
@@ -12,6 +13,7 @@ export const FormContext = createContext({
 
 export default function Form({ schema, onSubmit }) {
   const [formData, setFormData] = useState({});
+  const [isFetching, setIsFetching] = useState(false);
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -19,9 +21,26 @@ export default function Form({ schema, onSubmit }) {
     event.preventDefault();
     setIsSubmitted(true);
 
+    // checking if object is empty
+    console.log(errors);
     if (Object.keys(errors).length) return;
 
     onSubmit(formData);
+  };
+
+  const fetchDummyData = async () => {
+    setIsFetching(true);
+
+    const dummyData = schema.title.includes("Contact")
+      ? contactData
+      : jobApplicationData;
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    setFormData(dummyData);
+    setIsFetching(false);
+
+    console.log("Fetched data: ", dummyData);
   };
 
   const inputChangeHandler = (event) => {
@@ -46,6 +65,7 @@ export default function Form({ schema, onSubmit }) {
                 id={field.name}
                 type={field.formType}
                 name={field.name}
+                value={formData[field.name] || ""}
                 validation={{
                   required: true,
                   maxLength: field.maxLength ? field.maxLength : undefined,
@@ -64,6 +84,14 @@ export default function Form({ schema, onSubmit }) {
 
         <button className={classes.form__submit} type="submit">
           Submit
+        </button>
+
+        <button
+          onClick={fetchDummyData}
+          className={classes.form__submit}
+          type="button"
+        >
+          {isFetching ? "Fetching..." : "Fetch dummy data"}
         </button>
       </form>
     </FormContext.Provider>

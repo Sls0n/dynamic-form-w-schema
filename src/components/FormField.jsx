@@ -28,16 +28,13 @@ export const FormField = ({
   validation, // should be like { required: true, maxLength: 5, minLength: 2}
   onChange,
   placeholder,
-  value: initialValue,
-  defaultValue,
+  value,
   children,
 }) => {
-  const [value, setValue] = useState(initialValue || defaultValue || "");
   const { errors, setErrors, isSubmitted } = React.useContext(FormContext);
 
-  const handleChange = (e) => {
-    const errorMessage = validate(e.target.value, validation);
-    setValue(e.target.value);
+  const handleError = (value) => {
+    const errorMessage = validate(value, validation);
     setErrors((prevErrors) => {
       // if there is an error message, add it to the errors object, otherwise remove it
       if (errorMessage) {
@@ -47,25 +44,16 @@ export const FormField = ({
         return remainingErrors;
       }
     });
+  };
 
+  const handleChange = (e) => {
     onChange && onChange(e);
   };
 
   useEffect(() => {
-    if (isSubmitted) {
-      const errorMessage = validate(value, validation);
-      setErrors((prevErrors) => {
-        // if there is an error message, add it to the errors object, otherwise remove it
-        if (errorMessage) {
-          return { ...prevErrors, [id]: errorMessage };
-        } else {
-          const { [id]: value, ...remainingErrors } = prevErrors;
-          return remainingErrors;
-        }
-      });
-    }
+    handleError(value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSubmitted]);
+  }, [value]);
 
   return (
     <div className={classes.form__field}>

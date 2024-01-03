@@ -20,7 +20,7 @@ export const contactJson = {
     },
     {
       label: "Message",
-      formType: "textarea",
+      formType: "text",
       name: "message",
       placeholder: "Enter your message",
       required: true,
