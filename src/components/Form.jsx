@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import classes from "./Form.module.css";
 import { useEffect } from "react";
 import { generateFormFields } from "./FormFields";
+import { validate } from "../utils/validate-fn";
 
 export const Form = ({ schema, data, onSubmit }) => {
   const [formData, setFormData] = useState({});
@@ -43,65 +44,11 @@ export const Form = ({ schema, data, onSubmit }) => {
     });
   };
 
-  const validate = () => {
-    const newError = {};
-    let isValid = true;
-
-    schema.forEach((field) => {
-      if (field.validation?.required && !formData[field.name]) {
-        newError[field.name] = field.errorMessage;
-        isValid = false;
-      }
-
-      if (
-        field.validation?.minLength &&
-        formData[field.name]?.length < field.validation.minLength
-      ) {
-        newError[field.name] = field.errorMessage;
-        isValid = false;
-      }
-
-      if (
-        field.validation?.maxLength &&
-        formData[field.name]?.length > field.validation.maxLength
-      ) {
-        newError[field.name] = field.errorMessage;
-        isValid = false;
-      }
-
-      if (
-        field.validation?.min &&
-        formData[field.name] < field.validation.min
-      ) {
-        newError[field.name] = field.errorMessage;
-        isValid = false;
-      }
-
-      if (
-        field.validation?.max &&
-        formData[field.name] > field.validation.max
-      ) {
-        newError[field.name] = field.errorMessage;
-        isValid = false;
-      }
-
-      if (
-        field.validation?.pattern &&
-        !field.validation.pattern.test(formData[field.name])
-      ) {
-        newError[field.name] = field.errorMessage;
-        isValid = false;
-      }
-    });
-
-    setErrors(newError);
-    return isValid;
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (validate()) {
+    // validate helper function returns true if there are no errors
+    if (validate(formData, schema, setErrors)) {
       onSubmit(formData);
     }
   };
@@ -109,70 +56,8 @@ export const Form = ({ schema, data, onSubmit }) => {
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
       <h1 className={classes.form__header}>Dynamic Form</h1>
-      {/* {schema.map((field) => {
-        if (field.type === "text" || field.type === "number")
-          return (
-            <InputField
-              key={field.name}
-              id={field.name}
-              type={field.type}
-              name={field.name}
-              value={formData[field.name] || ""}
-              handleChange={handleChange}
-              placeholder={field.placeholder}
-              error={errors[field.name]}
-            >
-              {field.label}
-            </InputField>
-          );
-        else if (field.type === "select")
-          return (
-            <SelectField
-              key={field.name}
-              id={field.name}
-              name={field.name}
-              value={formData[field.name] || ""}
-              handleChange={handleChange}
-              error={errors[field.name]}
-              options={field.options}
-            >
-              {field.label}
-            </SelectField>
-          );
-        else if (field.type === "radio")
-          return (
-            <RadioField
-              key={field.name}
-              id={field.name}
-              name={field.name}
-              value={formData[field.name] || ""}
-              handleChange={handleChange}
-              placeholder={field.placeholder}
-              error={errors[field.name]}
-              options={field.options}
-              checked={formData[field.name]}
-            >
-              {field.label}
-            </RadioField>
-          );
-        else if (field.type === "textarea")
-          return (
-            <TextAreaField
-              key={field.name}
-              id={field.name}
-              name={field.name}
-              value={formData[field.name] || ""}
-              handleChange={handleChange}
-              placeholder={field.placeholder}
-              error={errors[field.name]}
-            >
-              {field.label}
-            </TextAreaField>
-          );
-        else return null;
-      })} */}
 
-      {/* Instead of mapping schema like above, we do this */}
+      {/* Instead of mapping schema, we do this */}
       {generateFormFields(schema, formData, handleChange, errors)}
 
       <button className={classes.form__submit} type="submit">
