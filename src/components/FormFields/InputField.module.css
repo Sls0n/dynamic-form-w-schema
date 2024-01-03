@@ -1,4 +1,12 @@
-.form__field-input {
+.input__field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.5rem;
+}
+
+.input__field-input {
   width: 100%;
   border-radius: 8px;
   border: 1px solid transparent;

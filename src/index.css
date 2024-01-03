@@ -63,6 +63,11 @@ input:focus {
   border: 1px solid #646cff;
 }
 
+textarea:focus {
+  outline: none;
+  border: 1px solid #646cff;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

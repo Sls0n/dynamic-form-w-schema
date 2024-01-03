@@ -8,6 +8,7 @@ export const contactData =
 export const jobApplicationData =
 {
   name: "John Doe",
-  email: "hi@example.com",
-  experience: 5,
+  age: 23,
+  gender: "Male",
+  level: "Junior",
 }

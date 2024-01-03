@@ -1,88 +1,82 @@
-export const contactJson = {
-  title: "Contact Form",
-  fields: [
-    {
-      label: "Name",
-      formType: "text",
-      name: "name",
-      placeholder: "Enter your name",
+export const contactSchema = [
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+    validation: {
       required: true,
       minLength: 3,
-      maxLength: 15,
+      maxLength: 20,
     },
-    {
-      label: "Email",
-      formType: "text",
-      name: "email",
-      placeholder: "Enter your email",
+    errorMessage: "Name must be between 3 and 20 characters.",
+  },
+  {
+    name: "email",
+    label: "Email",
+    type: "text",
+    validation: {
       required: true,
-      pattern: "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$",
+      minLength: 1,
+      pattern: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
     },
-    {
-      label: "Message",
-      formType: "text",
-      name: "message",
-      placeholder: "Enter your message",
+    errorMessage: "Please enter a valid email address.",
+  },
+  {
+    name: "message",
+    label: "Message",
+    type: "textarea",
+    validation: {
       required: true,
       minLength: 20,
-      maxLength: 100,
+      maxLength: 200,
     },
-    {
-      label: "Gender",
-      formType: "radio",
-      name: "gender",
-      required: true,
-      options : [
-        {id: 1,
-        value : 'Male'}, {
-          id: 2,
-          value: 'Female'
-        }
-      ]
-    },
-  ]
-}
+    errorMessage: "Message must be between 20 and 200 characters.",
+  },
+  
+];
 
-export const jobApplicationForm = {
-  title: "Job Application Form",
-  fields: [
-    {
-      label: "Applicant's name",
-      formType: "text",
-      name: "name",
-      placeholder: "Enter your name",
+
+export const jobApplicationSchema = [
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+    validation: {
       required: true,
       minLength: 3,
-      maxLength: 15,
+      maxLength: 20,
     },
-    {
-      label: "Applicant's email",
-      formType: "text",
-      name: "email",
-      placeholder: "Enter your email",
+    errorMessage: "Name must be between 3 and 20 characters.",
+  },
+  {
+    name: "age",
+    label: "Age",
+    type: "number",
+    validation: {
       required: true,
-      pattern: "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$",
+      min: 18,
+      max: 99,
     },
-    {
-      label: "Work Experience",
-      formType: "number",
-      name: "experience",
-      placeholder: "Eg: 1 years",
+    errorMessage: "You must be between 18 and 99 years old.",
+  },
+  {
+    name: "gender",
+    label: "Gender",
+    type: "radio",
+    options: ["Male", "Female", "Other"],
+    validation: {
       required: true,
-      min: 1,
-      max: 10,
     },
-    {
-      label: 'State',
-      formType: 'select',
-      name: 'state',
+    errorMessage: "Please select your gender.",
+  },
+  {
+    name: "level",
+    label: "Level",
+    type: "select",
+    options: ['', "Junior", "Senior", "Lead"],
+    validation: {
       required: true,
-      options: [
-        {id: 1, value : ''},
-        {id: 1, value : 'Bagmati province'},
-         {
-          id: 2, value: 'Gandaki province' }
-      ]
-    }
-  ]
-}
+    },
+    errorMessage: "Please select a level.",
+  },
+];

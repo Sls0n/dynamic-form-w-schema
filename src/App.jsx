@@ -1,33 +1,55 @@
 import React, { useState } from "react";
 
 import classes from "./App.module.css";
-import Form from "./components/Form";
-import { contactJson, jobApplicationForm } from "./utils/form-schemas";
+import { contactSchema, jobApplicationSchema } from "./utils/form-schemas";
+import { contactData, jobApplicationData } from "./utils/dummy-data";
+import { Form } from "./components/Form";
 
 function App() {
-  const [currentSchema, setCurrentSchema] = useState(jobApplicationForm);
+  const [currentSchema, setCurrentSchema] = useState(jobApplicationSchema);
+  const [formData, setFormData] = useState({});
   const [outputData, setOutputData] = useState({});
+  const [isFetching, setIsFetching] = useState(false);
 
   const switchSchemaHandler = () => {
-    // if currentSchema is contactJson, set it to jobApplicationForm
-    currentSchema === contactJson
-      ? setCurrentSchema(jobApplicationForm)
-      : setCurrentSchema(contactJson);
+    // if currentSchema is contactSchema, set it to jobApplicationSchema
+    currentSchema === contactSchema
+      ? setCurrentSchema(jobApplicationSchema)
+      : setCurrentSchema(contactSchema);
+  };
+
+  const fetchDummyData = async () => {
+    setIsFetching(true);
+
+    const dummyData =
+      currentSchema === contactSchema ? contactData : jobApplicationData;
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    setFormData(dummyData);
+    setIsFetching(false);
+
+    console.log("Fetched data: ", dummyData);
   };
 
   return (
     <div className={classes.container}>
       <Form
-        key={currentSchema.title}
+        key={currentSchema}
         schema={currentSchema}
-        onSubmit={(formData) => {
-          // just to show the output
-          console.log("Submitted data: ", formData);
-          setOutputData(formData);
+        onSubmit={(data) => {
+          setOutputData(data);
+          console.log("Submitted data: ", data);
         }}
+        data={formData}
       />
 
       <hr className={classes.divider} />
+
+      {/* button to fake fetch data */}
+      <button onClick={fetchDummyData} className={classes["fetch-button"]}>
+        {isFetching ? "Fetching..." : "Fetch dummy data"}
+      </button>
 
       {/* button to switch schema */}
       <button
@@ -35,7 +57,7 @@ function App() {
         className={classes["switch-button"]}
       >
         Switch to{" "}
-        {currentSchema === contactJson ? "Job Application" : "Contact"} form
+        {currentSchema === contactSchema ? "Job Application" : "Contact"} form
       </button>
 
       <hr className={classes.divider} />
