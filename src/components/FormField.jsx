@@ -47,15 +47,14 @@ export const FormField = ({
   };
 
   const handleChange = (e) => {
-    handleError(e.target.value);
+    // handleError(e.target.value);
     onChange && onChange(e);
   };
 
-  // For cases when the input fields are pre-filled or aren't touched. It will check for error one time only on submission
   useEffect(() => {
-    if (isSubmitted) handleError(value);
+    handleError(value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSubmitted]);
+  }, [value]);
 
   return (
     <div className={classes.form__field}>

@@ -22,7 +22,6 @@ export default function Form({ schema, onSubmit }) {
     setIsSubmitted(true);
 
     // checking if object is empty
-    console.log(errors);
     if (Object.keys(errors).length) return;
 
     onSubmit(formData);

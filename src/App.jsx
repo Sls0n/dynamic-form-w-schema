@@ -22,6 +22,7 @@ function App() {
         schema={currentSchema}
         onSubmit={(formData) => {
           // just to show the output
+          console.log("Submitted data: ", formData);
           setOutputData(formData);
         }}
       />
