@@ -26,7 +26,7 @@ function App() {
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    setFormData(dummyData);
+    setFormData((prevData) => ({ ...prevData, ...dummyData }));
     setIsFetching(false);
 
     console.log("Fetched data: ", dummyData);

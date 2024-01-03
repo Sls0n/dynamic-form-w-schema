@@ -55,7 +55,7 @@ export const Form = ({ schema, data, onSubmit }) => {
 
       if (
         field.validation?.minLength &&
-        formData[field.name].length < field.validation.minLength
+        formData[field.name]?.length < field.validation.minLength
       ) {
         newError[field.name] = field.errorMessage;
         isValid = false;
@@ -63,7 +63,7 @@ export const Form = ({ schema, data, onSubmit }) => {
 
       if (
         field.validation?.maxLength &&
-        formData[field.name].length > field.validation.maxLength
+        formData[field.name]?.length > field.validation.maxLength
       ) {
         newError[field.name] = field.errorMessage;
         isValid = false;
