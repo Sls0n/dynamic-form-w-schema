@@ -1,7 +1,7 @@
 import React, { useState, createContext } from "react";
 import classes from "./Form.module.css";
 import { FormField } from "./FormField";
-import { contactData, jobApplicationData } from "../utils/dummyData";
+import { contactData, jobApplicationData } from "../utils/dummy-data";
 
 export const FormContext = createContext({
   errors: {},
