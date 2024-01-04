@@ -79,4 +79,13 @@ export const jobApplicationSchema = [
     },
     errorMessage: "Please select a level.",
   },
+  {
+    name: "photo",
+    label: "Photo",
+    type: "file",
+    validation: {
+      required: true,
+    },
+    errorMessage: "Please add a image.",
+  },
 ];

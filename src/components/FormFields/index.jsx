@@ -2,6 +2,7 @@ import { InputField } from "./InputField";
 import { SelectField } from "./SelectField";
 import { RadioField } from "./RadioField";
 import { TextAreaField } from "./TextAreaField";
+import { FileInputField } from "./FileField";
 
 const fieldComponents = {
   text: InputField,
@@ -9,6 +10,7 @@ const fieldComponents = {
   select: SelectField,
   radio: RadioField,
   textarea: TextAreaField,
+  file: FileInputField,
 };
 
 export const generateFormFields = (
@@ -26,7 +28,6 @@ export const generateFormFields = (
       type: field.type,
       name: field.name,
       handleChange,
-      handleBlur,
       error: errors[field.name],
     };
 
@@ -49,6 +50,17 @@ export const generateFormFields = (
             key={field.name}
             value={formData[field.name] || ""}
             options={field.options || undefined}
+            handleBlur={handleBlur}
+            {...commonProps}
+          >
+            {field.label}
+          </FieldComponent>
+        );
+      case "file":
+        return (
+          <FieldComponent
+            key={field.name}
+            value={formData[field.name] || ""}
             {...commonProps}
           >
             {field.label}
