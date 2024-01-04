@@ -42,11 +42,11 @@ export const Form = ({ schema, data, onSubmit, validationMode = "onAll" }) => {
   };
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value, files, type } = event.target;
 
     const updatedFormData = {
       ...formData,
-      [name]: value,
+      [name]: type === 'file' ? (files[0] || '') : value,
     };
 
     setFormData(updatedFormData);
