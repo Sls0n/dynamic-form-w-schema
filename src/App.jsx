@@ -41,6 +41,7 @@ function App() {
           setOutputData(data);
           console.log("Submitted data: ", data);
         }}
+        validationMode="onAll"
         data={formData}
       />
 

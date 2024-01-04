@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import classes from "./Form.module.css";
-import { useEffect } from "react";
-import { generateFormFields } from "./FormFields";
+import React, { useEffect, useState } from "react";
 import { validate } from "../utils/validate-fn";
+import classes from "./Form.module.css";
+import { generateFormFields } from "./FormFields";
 
-export const Form = ({ schema, data, onSubmit }) => {
+export const Form = ({ schema, data, onSubmit, validationMode = "onAll" }) => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
 
@@ -31,26 +30,49 @@ export const Form = ({ schema, data, onSubmit }) => {
     }
   }, [data]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const runValidation = (data, schema, property) => {
+    const { isValid, errors } = validate(data, schema);
 
-    // if the field is touched again, it removes the error temporarily
-    setErrors({
-      ...errors,
-      [e.target.name]: "",
-    });
+    if (!isValid) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [property]: errors[property],
+      }));
+    }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    const updatedFormData = {
+      ...formData,
+      [name]: value,
+    };
+
+    setFormData(updatedFormData);
+
+    if (validationMode === "onChange" || validationMode === "onAll") {
+      runValidation(updatedFormData, schema, name);
+    }
+  };
+
+  const handleBlur = (event) => {
+    const { name } = event.target;
+
+    if (validationMode === "onBlur" || validationMode === "onAll") {
+      runValidation(formData, schema, name);
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const { errors, isValid } = validate(formData, schema);
 
-    if (!isValid) {
+    if (validationMode === "onSubmit" || validationMode === "onAll") {
       setErrors(errors);
+    }
+
+    if (!isValid) {
       return;
     }
 
@@ -62,7 +84,7 @@ export const Form = ({ schema, data, onSubmit }) => {
       <h1 className={classes.form__header}>Dynamic Form</h1>
 
       {/* Instead of mapping schema, we do this */}
-      {generateFormFields(schema, formData, handleChange, errors)}
+      {generateFormFields(schema, formData, handleChange, handleBlur, errors)}
 
       <button className={classes.form__submit} type="submit">
         Submit

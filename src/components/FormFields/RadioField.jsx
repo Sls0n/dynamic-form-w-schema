@@ -6,6 +6,7 @@ export const RadioField = ({
   id,
   name,
   handleChange,
+  handleBlur,
   children,
   error,
   options,
@@ -23,6 +24,7 @@ export const RadioField = ({
             value={option}
             onChange={handleChange}
             checked={checked === option}
+            onBlur={handleBlur}
           />
           <label htmlFor={option}>{option}</label>
         </div>

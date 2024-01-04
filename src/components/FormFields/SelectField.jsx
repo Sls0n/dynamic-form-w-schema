@@ -7,6 +7,7 @@ export const SelectField = ({
   name,
   value,
   handleChange,
+  handleBlur,
   children,
   error,
   options,
@@ -20,6 +21,7 @@ export const SelectField = ({
         name={name}
         value={value}
         onChange={handleChange}
+        onBlur={handleBlur}
       >
         {options.map((option) => (
           <option key={option} value={option}>

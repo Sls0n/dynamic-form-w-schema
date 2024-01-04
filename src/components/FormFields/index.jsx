@@ -11,15 +11,22 @@ const fieldComponents = {
   textarea: TextAreaField,
 };
 
-export const generateFormFields = (schema, formData, handleChange, errors) => {
+export const generateFormFields = (
+  schema,
+  formData,
+  handleChange,
+  handleBlur,
+  errors
+) => {
   return schema.map((field) => {
     const FieldComponent = fieldComponents[field.type];
 
-    const fieldProps = {
+    const commonProps = {
       id: field.name,
       type: field.type,
       name: field.name,
       handleChange,
+      handleBlur,
       error: errors[field.name],
     };
 
@@ -31,7 +38,7 @@ export const generateFormFields = (schema, formData, handleChange, errors) => {
             value={formData[field.name] || ""}
             options={field.options || undefined}
             checked={formData[field.name] || undefined}
-            {...fieldProps}
+            {...commonProps}
           >
             {field.label}
           </FieldComponent>
@@ -42,7 +49,7 @@ export const generateFormFields = (schema, formData, handleChange, errors) => {
             key={field.name}
             value={formData[field.name] || ""}
             options={field.options || undefined}
-            {...fieldProps}
+            {...commonProps}
           >
             {field.label}
           </FieldComponent>
@@ -53,7 +60,7 @@ export const generateFormFields = (schema, formData, handleChange, errors) => {
             key={field.name}
             value={formData[field.name] || ""}
             placeholder={field.placeholder}
-            {...fieldProps}
+            {...commonProps}
           >
             {field.label}
           </FieldComponent>
