@@ -14,21 +14,50 @@ const fieldComponents = {
 export const generateFormFields = (schema, formData, handleChange, errors) => {
   return schema.map((field) => {
     const FieldComponent = fieldComponents[field.type];
-    return (
-      <FieldComponent
-        key={field.name}
-        id={field.name}
-        type={field.type}
-        name={field.name}
-        value={formData[field.name] || ""}
-        handleChange={handleChange}
-        placeholder={field.placeholder}
-        error={errors[field.name]}
-        options={field.options || undefined}
-        checked={formData[field.name] || undefined}
-      >
-        {field.label}
-      </FieldComponent>
-    );
+
+    const fieldProps = {
+      id: field.name,
+      type: field.type,
+      name: field.name,
+      handleChange,
+      error: errors[field.name],
+    };
+
+    switch (field.type) {
+      case "radio":
+        return (
+          <FieldComponent
+            key={field.name}
+            value={formData[field.name] || ""}
+            options={field.options || undefined}
+            checked={formData[field.name] || undefined}
+            {...fieldProps}
+          >
+            {field.label}
+          </FieldComponent>
+        );
+      case "select":
+        return (
+          <FieldComponent
+            key={field.name}
+            value={formData[field.name] || ""}
+            options={field.options || undefined}
+            {...fieldProps}
+          >
+            {field.label}
+          </FieldComponent>
+        );
+      default:
+        return (
+          <FieldComponent
+            key={field.name}
+            value={formData[field.name] || ""}
+            placeholder={field.placeholder}
+            {...fieldProps}
+          >
+            {field.label}
+          </FieldComponent>
+        );
+    }
   });
 };
