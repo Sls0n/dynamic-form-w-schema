@@ -47,10 +47,14 @@ export const Form = ({ schema, data, onSubmit }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // validate helper function returns true if there are no errors
-    if (validate(formData, schema, setErrors)) {
-      onSubmit(formData);
+    const { errors, isValid } = validate(formData, schema);
+
+    if (!isValid) {
+      setErrors(errors);
+      return;
     }
+
+    onSubmit(formData);
   };
 
   return (

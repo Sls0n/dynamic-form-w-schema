@@ -1,59 +1,37 @@
+const isRequired = (value, field) => field.validation?.required && !value
+const isMinLength = (value, field) => field.validation?.minLength && value.length < field.validation.minLength
+const isMaxLength = (value, field) => field.validation?.maxLength && value.length > field.validation.maxLength
+const isMin = (value, field) => field.validation?.min && value < field.validation.min
+const isMax = (value, field) => field.validation?.max && value > field.validation.max
+const isPatternError = (value, field) => field.validation?.pattern && !field.validation.pattern.test(value)
+
+const validateField = (value, field) => {
+  // if from all the errors, one is true, then the field is invalid
+  const error = isRequired(value, field) || isMinLength(value, field) || isMaxLength(value, field) || isMin(value, field) || isMax(value, field) || isPatternError(value, field)
+
+  return error ? field.errorMessage : ''
+}
+
 export const validate = (
   formData,
-  schema,
-  setErrors
-  
+  schema,  
 ) => {
   const newError = {};
   let isValid = true;
 
   schema.forEach((field) => {
-    if (field.validation?.required && !formData[field.name]) {
-      newError[field.name] = field.errorMessage;
-      isValid = false;
-    }
+   const value = formData[field.name];
 
-    if (
-      field.validation?.minLength &&
-      formData[field.name]?.length < field.validation.minLength
-    ) {
-      newError[field.name] = field.errorMessage;
-      isValid = false;
-    }
+   const error = validateField(value, field)
 
-    if (
-      field.validation?.maxLength &&
-      formData[field.name]?.length > field.validation.maxLength
-    ) {
-      newError[field.name] = field.errorMessage;
+   if (error) {
+      newError[field.name] = error;
       isValid = false;
-    }
-
-    if (
-      field.validation?.min &&
-      formData[field.name] < field.validation.min
-    ) {
-      newError[field.name] = field.errorMessage;
-      isValid = false;
-    }
-
-    if (
-      field.validation?.max &&
-      formData[field.name] > field.validation.max
-    ) {
-      newError[field.name] = field.errorMessage;
-      isValid = false;
-    }
-
-    if (
-      field.validation?.pattern &&
-      !field.validation.pattern.test(formData[field.name])
-    ) {
-      newError[field.name] = field.errorMessage;
-      isValid = false;
-    }
+   }
   });
 
-  setErrors(newError);
-  return isValid;
+  return {
+    isValid,
+    errors: newError,
+  }
 };
